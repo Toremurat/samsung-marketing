@@ -36,7 +36,7 @@ export default {
 	methods: {
 		async getPromo() {
 			let curId = this.$route.params.id;
-			await axios.get('http://demo8520125.mockable.io/getPromo/' + curId)
+			await axios.get('/promo/getPromo/' + curId)
 				.then(response => {
 					this.postData = [];
 					let date_end = new Date(response.data.promo.date_end);
@@ -44,7 +44,6 @@ export default {
 
 					let today = Date.now();
 					let result = date_end - today;
-					console.log(result)
 					if (result < 0) result = 0;
 					let num = new Date(result).getDate();
 					if (num == 0) num = 1;
@@ -66,14 +65,12 @@ export default {
 						"date_end": date_end.toShortFormat(),
 						"remain": remainDay,
 					};
-					console.log(this.postData, 'is Promodata')
 				});
 
 		}
 	},
 
 	created() {
-		console.log(this.$route.params.id)
 		this.getPromo();
 
 	},

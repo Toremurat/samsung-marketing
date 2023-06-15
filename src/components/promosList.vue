@@ -12,7 +12,7 @@
             <p class="date-title"> Срок</p>
             <p>{{ promoItem.date_start }} - {{ promoItem.date_end }}</p>
           </div>
-          <div class="counter-date" v-if="promoItem.remain_day!=''">
+          <div class="counter-date" v-if="promoItem.remain_day != ''">
             <div class="counter-date-title">Осталось</div>
             <p class="counter-date-text">{{ promoItem.remain_day }}</p>
           </div>
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     async getPromos() {
-      await axios.get('http://demo8520125.mockable.io/' + this.promoStatus) // eslint-disable-next-line 
+      await axios.get('/promo/getPromoList/' + this.promoStatus) // eslint-disable-next-line 
         .then(response => {
           this.promoData = [];
           response.data.forEach(element => {
@@ -64,7 +64,7 @@ export default {
             if (result < 0) result = 0;
             let num = new Date(result).getDate();
             if (num == 0) num = 1;
-            let remainDay = num + ' ' + whatDay(num) 
+            let remainDay = num + ' ' + whatDay(num)
 
             function whatDay(num) {
               if (num == 1 || (num > 20 && num % 10 == 1)) return "день";
@@ -82,11 +82,9 @@ export default {
               "remain_day": remainDay,
             });
           });
-          console.log(this.promoData)
         })
 
         .catch((error) => {
-          console.log(error);
           this.errorData.push(error)
         });
     },
@@ -152,6 +150,7 @@ export default {
   font-size: 17px;
   line-height: 120%;
   margin: 0;
+  color: #343434;
 }
 
 .col-sm-6.basis-50.promo-box a .description {
@@ -166,6 +165,14 @@ export default {
 }
 
 .col-sm-6.basis-50.promo-box a .date-info p {
+  margin: 0 0 5px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 110%;
+  color: #343434;
+}
+
+.col-sm-6.basis-50.promo-box a .date-info .counter-date-title {
   margin: 0 0 5px;
   font-weight: 400;
   font-size: 15px;
@@ -191,5 +198,44 @@ export default {
 .col-sm-6.basis-50.promo-box a .image-box {
   width: 50px;
   height: 50px;
+}
+
+@media (max-width: 560px) {
+  .col-sm-6.basis-50.promo-box {
+    padding: 0;
+    width: calc(100% - 20px);
+  }
+
+  .col-sm-6.basis-50.promo-box a {
+    flex-flow: column;
+  }
+
+  .col-sm-6.basis-50.promo-box a .image-box {
+    margin-bottom: 30px;
+  }
+
+  .col-sm-6.basis-50.promo-box a .date-info {
+    flex-flow: column;
+  }
+
+  .col-sm-6.basis-50.promo-box a .date-info .promo-dates,
+  .col-sm-6.basis-50.promo-box a .date-info .counter-date {
+    display: flex;
+    gap: 10px;
+  }
+
+  .col-sm-6.basis-50.promo-box a .date-info p {
+    margin: 0px;
+    font-size: 17px;
+  }
+
+  .col-sm-6.basis-50.promo-box a .date-info .counter-date-title {
+    margin: 0px;
+    font-size: 17px;
+  }
+
+  .col-sm-6.basis-50.promo-box a .date-info .promo-dates {
+    margin: 0 0 15px;
+  }
 }
 </style>

@@ -2,9 +2,12 @@
   <div>
     <h1>Список акций</h1>
     <ul class="list-unstyled promoChange">
-      <li class="promoBtn"><a href="" @click.prevent="promoCurrent()" class="promoArea" :class="{active: curPromo}">show current</a></li>
-      <li class="promoBtn"><a href="" @click.prevent="promoFuture()" class="promoArea" :class="{active: futurePromo}">show future</a></li>
-      <li class="promoBtn"><a href="" @click.prevent="promoPast()" class="promoArea" :class="{active: pastPromo}">show past</a></li>
+      <li class="promoBtn"><a href="" @click.prevent="promoCurrent()" class="promoArea"
+          :class="{ active: curPromo }">Текущие акции</a></li>
+      <li class="promoBtn"><a href="" @click.prevent="promoFuture()" class="promoArea"
+          :class="{ active: futurePromo }">Будущие акции</a></li>
+      <li class="promoBtn"><a href="" @click.prevent="promoPast()" class="promoArea"
+          :class="{ active: pastPromo }">Прошедшие акции</a></li>
     </ul>
     <div class="promoWrapper row">
       <promosList promo-status="current" v-if="curPromo" />
@@ -50,9 +53,10 @@ export default {
 }
 </script>
 <style scoped>
-a.active{
-  color:red
+a.active {
+  color: red
 }
+
 .list-unstyled.promoChange {
   display: flex;
   -webkit-flex-flow: row nowrap;
@@ -89,11 +93,27 @@ a.active{
   width: 0;
   left: 50%;
 }
+
 h1 {
   font-weight: 700;
   font-size: 34px;
   line-height: 130%;
   color: #000000;
   margin: 40px 0 17px;
+}
+
+@media (max-width:560px) {
+  .list-unstyled.promoChange .promoArea {
+    white-space: nowrap;
+  }
+
+  .list-unstyled.promoChange {
+    width: 100%;
+    overflow-x: scroll;
+  }
+
+  .list-unstyled.promoChange .promoBtn {
+    min-height: 34px;
+  }
 }
 </style>

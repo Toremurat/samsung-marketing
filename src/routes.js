@@ -4,7 +4,7 @@ import promoPage from "@/views/promoPage.vue";
 
 const routes = [
   {
-    path: '',
+    path: '/promo/',
     name: 'homePage',
     component: homePage,
   },
