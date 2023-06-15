@@ -1,28 +1,33 @@
-<template v-if="promoData">
-  <div v-for="promoItem in promoData" :key="promoItem.id" class="col-sm-6 basis-50 promo-box">
-    <router-link :to="`/promo/${promoItem.id}`">
-      <div v-html="promoItem.image" class="image-box"></div>
-      <div class="info-box">
-        <div class="description">
-          <h4>{{ promoItem.name }}</h4>
-          <p>{{ promoItem.description }} is description</p>
-        </div>
-        <div class="date-info">
-          <div class="promo-dates">
-            <p class="date-title"> Срок</p>
-            <p>{{ promoItem.date_start }} - {{ promoItem.date_end }}</p>
+<template>
+  <div class="promo-wrapper" v-if="promoData && promoData.length > 0">
+    <div class="promo-container row">
+      <div v-for="promoItem in promoData" :key="promoItem.id" class="col-sm-6 basis-50 promo-box">
+        <router-link :to="`/promo/${promoItem.id}`">
+          <div v-html="promoItem.image" class="image-box"></div>
+          <div class="info-box">
+            <div class="description">
+              <h4>{{ promoItem.name }}</h4>
+              <p>{{ promoItem.description }}</p>
+            </div>
+            <div class="date-info">
+              <div class="promo-dates">
+                <p class="date-title"> Срок</p>
+                <p>{{ promoItem.date_start }} - {{ promoItem.date_end }}</p>
+              </div>
+              <div class="counter-date" v-if="promoItem.remain_day != ''">
+                <div class="counter-date-title">Осталось</div>
+                <p class="counter-date-text">{{ promoItem.remain_day }}</p>
+              </div>
+            </div>
           </div>
-          <div class="counter-date" v-if="promoItem.remain_day != ''">
-            <div class="counter-date-title">Осталось</div>
-            <p class="counter-date-text">{{ promoItem.remain_day }}</p>
-          </div>
-        </div>
+        </router-link>
       </div>
-    </router-link>
+    </div>
   </div>
+  <div class="null-message" >{{ promoData.message }}</div>
+  <!-- <div class="null-message" v-if="this.promoError">loading</div> -->
+
 </template>
-<!-- @mouseover="isHover = true"
-    @mouseout="isHover = false" :class="{ active: isHover }" -->
 <script>
 Date.prototype.toShortFormat = function () {
   const monthNames = ['Января', 'Февраля', 'Марта', 'Апреля',
@@ -47,12 +52,14 @@ export default {
     return {
       promoData: [],
       errorData: [],
-      isHover: false
+      isHover: false,
+      loadMessage: 'Загрузка...'
     }
   },
   methods: {
     async getPromos() {
       await axios.get('/promo/getPromoList/' + this.promoStatus) // eslint-disable-next-line 
+      // await axios.get('/promo/' + this.promoStatus) // eslint-disable-next-line 
         .then(response => {
           this.promoData = [];
           response.data.forEach(element => {
@@ -60,7 +67,6 @@ export default {
             let date_start = new Date(element.promo.date_start);
             let today = Date.now();
             let result = date_end - today;
-            console.log(result)
             if (result < 0) result = 0;
             let num = new Date(result).getDate();
             if (num == 0) num = 1;
@@ -85,15 +91,17 @@ export default {
         })
 
         .catch((error) => {
+          this.promoData = {
+            "message" : 'Акции на данный момент отсутсвуют'
+          }
+          console.log(error);
           this.errorData.push(error)
         });
     },
   },
   created() {
-    // axios.get('/promo/getPromoList/')   // for production
 
     this.getPromos();
-
   },
   beforeMount() {
 

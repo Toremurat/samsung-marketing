@@ -1,19 +1,21 @@
 <template>
-	<a @click="$router.go(-1)" class="backlink"><i class="icon-back-to">
-			<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd" clip-rule="evenodd"
-					d="M8.20206 2.10868C8.39732 1.91342 8.39732 1.59684 8.20206 1.40157C8.0068 1.20631 7.69021 1.20631 7.49495 1.40157L0.896484 8.00004L7.49495 14.5985C7.69021 14.7938 8.0068 14.7938 8.20206 14.5985C8.39732 14.4032 8.39732 14.0867 8.20206 13.8914L2.81066 8.5L13.6036 8.5C13.8798 8.5 14.1036 8.27614 14.1036 8C14.1036 7.72386 13.8798 7.5 13.6036 7.5L2.81074 7.5L8.20206 2.10868Z"
-					fill="#666666" />
-			</svg>
-		</i>Вернуться к списку акций</a>
 	<div v-if="postData" class="promo-wrapper">
+		<router-link to="/promo" class="backlink">
+			<i class="icon-back-to">
+				<svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd"
+						d="M8.20206 2.10868C8.39732 1.91342 8.39732 1.59684 8.20206 1.40157C8.0068 1.20631 7.69021 1.20631 7.49495 1.40157L0.896484 8.00004L7.49495 14.5985C7.69021 14.7938 8.0068 14.7938 8.20206 14.5985C8.39732 14.4032 8.39732 14.0867 8.20206 13.8914L2.81066 8.5L13.6036 8.5C13.8798 8.5 14.1036 8.27614 14.1036 8C14.1036 7.72386 13.8798 7.5 13.6036 7.5L2.81074 7.5L8.20206 2.10868Z"
+						fill="#666666" />
+				</svg>
+			</i>Вернуться к списку акций</router-link>
 		<div class="promo-header">
 			<div v-html="this.postData.image" class="image-block"></div>
 			<div class="promo-description">
 				<h1 class="promo-title">{{ this.postData.name }}</h1>
 				<p class="promo-dates"><span>Срок</span>{{ this.postData.date_start }} - {{ this.postData.date_end }}
 				</p>
-				<div class="promo-date-calc" v-if="this.postData.remain!=''"><span>Осталось</span>{{ this.postData.remain }}</div>
+				<div class="promo-date-calc" v-if="this.postData.remain!=''"><span>Осталось</span>{{ this.postData.remain }}
+				</div>
 			</div>
 		</div>
 		<div id="promo-content" class="description-wrapper" v-html="this.postData.text"></div>
@@ -36,6 +38,7 @@ export default {
 	methods: {
 		async getPromo() {
 			let curId = this.$route.params.id;
+			// await axios.get('http://demo8520125.mockable.io/getPromo/' + curId)
 			await axios.get('/promo/getPromo/' + curId)
 				.then(response => {
 					this.postData = [];
@@ -65,8 +68,11 @@ export default {
 						"date_end": date_end.toShortFormat(),
 						"remain": remainDay,
 					};
-				});
 
+				})
+				.catch((error) => {
+					console.log(error);
+				});
 		}
 	},
 
@@ -324,6 +330,90 @@ Date.prototype.toShortFormat = function () {
 	table tbody {
 		min-width: 200vw;
 		display: block;
+	}
+}
+</style>
+<style scoped>
+#notfound {
+	position: relative;
+	height: 100vh;
+}
+
+#notfound .notfound {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%)
+}
+
+.notfound {
+	max-width: 410px;
+	width: 100%;
+	text-align: center
+}
+
+.notfound .notfound-404 {
+	height: 280px;
+	position: relative;
+	z-index: -1
+}
+
+.notfound .notfound-404 h1 {
+	font-family: montserrat, sans-serif;
+	font-size: 230px;
+	margin: 0;
+	font-weight: 900;
+	position: absolute;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+	background: black;
+	/* background: url(../img/bg.jpg) no-repeat; */
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-size: cover;
+	background-position: center
+}
+
+.notfound h2 {
+	font-family: montserrat, sans-serif;
+	color: #000;
+	font-size: 24px;
+	font-weight: 700;
+	text-transform: uppercase;
+	margin-top: 0
+}
+
+.notfound p {
+	font-family: montserrat, sans-serif;
+	color: #000;
+	font-size: 14px;
+	font-weight: 400;
+	margin-bottom: 20px;
+	margin-top: 0
+}
+
+#notfound .backlink {
+	display: flex;
+	-webkit-flex-flow: row nowrap;
+	align-items: center;
+	justify-content: center;
+}
+
+#notfound .backlink I {
+	top: 0px;
+}
+
+@media only screen and (max-width:767px) {
+	.notfound .notfound-404 {
+		height: 142px
+	}
+
+	.notfound .notfound-404 h1 {
+		font-size: 112px
 	}
 }
 </style>
