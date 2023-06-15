@@ -99,6 +99,7 @@ Date.prototype.toShortFormat = function () {
 	display: flex;
 	-webkit-flex-flow: row nowrap;
 	-webkit-align-items: center;
+	cursor: pointer;
 }
 
 .backlink i {
