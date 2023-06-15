@@ -59,7 +59,6 @@ export default {
   methods: {
     async getPromos() {
       await axios.get('/promo/getPromoList/' + this.promoStatus) // eslint-disable-next-line 
-      // await axios.get('/promo/' + this.promoStatus) // eslint-disable-next-line 
         .then(response => {
           this.promoData = [];
           response.data.forEach(element => {
@@ -68,7 +67,8 @@ export default {
             let today = Date.now();
             let result = date_end - today;
             if (result < 0) result = 0;
-            let num = new Date(result).getDate();
+            let num = Math.ceil(result/(1000*3600*24));
+            // let num = new Date(result).getDate();
             if (num == 0) num = 1;
             let remainDay = num + ' ' + whatDay(num)
 
