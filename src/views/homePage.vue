@@ -3,11 +3,11 @@
     <h1>Список акций</h1>
     <ul class="list-unstyled promoChange">
       <li class="promoBtn"><a href="" @click.prevent="promoCurrent()" class="promoArea"
-          :class="{ active: curPromo }">Текущие акции</a></li>
+          :class="{ active: curPromo }">Текущие</a></li>
       <li class="promoBtn"><a href="" @click.prevent="promoFuture()" class="promoArea"
-          :class="{ active: futurePromo }">Будущие акции</a></li>
+          :class="{ active: futurePromo }">Будущие</a></li>
       <li class="promoBtn"><a href="" @click.prevent="promoPast()" class="promoArea"
-          :class="{ active: pastPromo }">Прошедшие акции</a></li>
+          :class="{ active: pastPromo }">Прошедшие</a></li>
     </ul>
     <div class="promoWrapper row">
       <promosList promo-status="current" v-if="curPromo" />
@@ -61,7 +61,7 @@ a.active {
   display: flex;
   -webkit-flex-flow: row nowrap;
   column-gap: 30px;
-  margin: 0 0 40px;
+  margin: 0 0 20px;
 }
 
 .list-unstyled.promoChange .promoArea {
@@ -112,6 +112,10 @@ h1 {
     overflow-x: scroll;
   }
 
+
+  .list-unstyled.promoChange {
+  margin: 0 0 -10px;
+}
   .list-unstyled.promoChange .promoBtn {
     min-height: 34px;
   }

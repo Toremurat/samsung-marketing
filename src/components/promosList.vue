@@ -24,15 +24,14 @@
       </div>
     </div>
   </div>
-  <div class="null-message" >{{ promoData.message }}</div>
+  <div class="null-message">{{ promoData.message }}</div>
   <!-- <div class="null-message" v-if="this.promoError">loading</div> -->
-
 </template>
-<script>
+<script>/* eslint-disable */
 Date.prototype.toShortFormat = function () {
-  const monthNames = ['Января', 'Февраля', 'Марта', 'Апреля',
-    'Мая', 'Июня', 'Июля', 'Августа',
-    'Сентября', 'Октября', 'Ноября', 'Декабря'];
+  const monthNames = ['января', 'февраля', 'марта', 'апреля',
+    'мая', 'июня', 'июля', 'августа',
+    'сентября', 'октября', 'ноября', 'декабря'];
 
   const day = this.getDate();
   const monthIndex = this.getMonth();
@@ -59,25 +58,10 @@ export default {
   methods: {
     async getPromos() {
       await axios.get('/promo/getPromoList/' + this.promoStatus) // eslint-disable-next-line 
+        // await axios.get('http://demo8520125.mockable.io/' + this.promoStatus) // eslint-disable-next-line 
         .then(response => {
           this.promoData = [];
           response.data.forEach(element => {
-            let date_end = new Date(element.promo.date_end);
-            let date_start = new Date(element.promo.date_start);
-            let today = Date.now();
-            let result = date_end - today;
-            if (result < 0) result = 0;
-            let num = Math.ceil(result/(1000*3600*24));
-            // let num = new Date(result).getDate();
-            if (num == 0) num = 1;
-            let remainDay = num + ' ' + whatDay(num)
-
-            function whatDay(num) {
-              if (num == 1 || (num > 20 && num % 10 == 1)) return "день";
-              if (num < 5 || (num > 20 && num % 10 < 5 && num % 10 > 0)) return "дня";
-              return "дней";
-            }
-            if (date_start > today || today > date_end) remainDay = '';
             this.promoData.push({
               "id": element.promo.id,
               "name": element.name,
@@ -92,7 +76,7 @@ export default {
 
         .catch((error) => {
           this.promoData = {
-            "message" : 'Акции на данный момент отсутсвуют'
+            "message": 'Акции на данный момент отсутсвуют'
           }
           console.log(error);
           this.errorData.push(error)
@@ -208,6 +192,10 @@ export default {
   height: 50px;
 }
 
+.promo-dates p+p {
+  text-transform: lowercase;
+}
+
 @media (max-width: 560px) {
   .col-sm-6.basis-50.promo-box {
     padding: 0;
@@ -219,7 +207,8 @@ export default {
   }
 
   .col-sm-6.basis-50.promo-box a .image-box {
-    margin-bottom: 30px;
+    margin: 0 0 30px;
+    left: 0;
   }
 
   .col-sm-6.basis-50.promo-box a .date-info {

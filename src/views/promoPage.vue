@@ -11,10 +11,10 @@
 		<div class="promo-header">
 			<div v-html="this.postData.image" class="image-block"></div>
 			<div class="promo-description">
-				<h1 class="promo-title">{{ this.postData.name }}</h1>
+				<h1 class="promo-title" v-title="this.postData.name">{{ this.postData.name }}</h1>
 				<p class="promo-dates"><span>Срок</span>{{ this.postData.date_start }} - {{ this.postData.date_end }}
 				</p>
-				<div class="promo-date-calc" v-if="this.postData.remain!=''"><span>Осталось</span>{{ this.postData.remain }}
+				<div class="promo-date-calc" v-if="this.postData.remain != ''"><span>Осталось</span>{{ this.postData.remain }}
 				</div>
 			</div>
 		</div>
@@ -38,8 +38,8 @@ export default {
 	methods: {
 		async getPromo() {
 			let curId = this.$route.params.id;
-			// await axios.get('http://demo8520125.mockable.io/getPromo/' + curId)
-			await axios.get('/promo/getPromo/' + curId)
+			await axios.get('http://demo8520125.mockable.io/getPromo/' + curId)
+				// await axios.get('/promo/getPromo/' + curId)
 				.then(response => {
 					this.postData = [];
 					let date_end = new Date(response.data.promo.date_end);
@@ -48,7 +48,7 @@ export default {
 					let today = Date.now();
 					let result = date_end - today;
 					if (result < 0) result = 0;
-					let num = Math.ceil(result/(1000*3600*24));
+					let num = Math.ceil(result / (1000 * 3600 * 24));
 					if (num == 0) num = 1;
 					let remainDay = num + ' ' + whatDay(num)
 
@@ -78,13 +78,12 @@ export default {
 
 	created() {
 		this.getPromo();
-
 	},
 }
 Date.prototype.toShortFormat = function () {
-	const monthNames = ['Января', 'Февраля', 'Марта', 'Апреля',
-		'Мая', 'Июня', 'Июля', 'Августа',
-		'Сентября', 'Октября', 'Ноября', 'Декабря'];
+	const monthNames = ['января', 'февраля', 'марта', 'апреля',
+		'мая', 'июня', 'июля', 'августа',
+		'сентября', 'октября', 'ноября', 'декабря'];
 
 	const day = this.getDate();
 	const monthIndex = this.getMonth();
@@ -325,6 +324,10 @@ Date.prototype.toShortFormat = function () {
 		width: calc(100vw - 40px);
 		touch-action: manipulation;
 		display: block;
+	}
+
+	.promo-wrapper {
+		margin-top: 30px;
 	}
 
 	table tbody {
